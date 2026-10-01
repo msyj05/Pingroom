@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Inter", sans-serif;
+
+  --color-ink: #18160f;
+  --color-ink-800: #242018;
+  --color-cream: #f1ece0;
+  --color-paper: #faf7ef;
+
+  --color-lime: #d9f34e;
+  --color-lime-dark: #c3db3a;
+  --color-lime-50: #f4fadd;
+
+  --color-muted: #8c8573;
+  --color-line: #e4ddc9;
+
+  --color-success: #1f9d6c;
+  --color-success-dark: #187f57;
+
+  --color-danger: #d6503f;
+  --color-danger-bg: #fbe9e5;
+
+  --color-avatar-purple: #b7a0ee;
+  --color-avatar-lime: #cbe94a;
+  --color-avatar-orange: #f0a27a;
+  --color-avatar-blue: #8fc6ec;
+
+  --radius-xl2: 1.25rem;
+
+  --shadow-soft: 0 1px 2px rgba(24, 22, 15, 0.04), 0 8px 24px rgba(24, 22, 15, 0.06);
+  --shadow-panel: 0 20px 60px rgba(24, 22, 15, 0.12);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-cream text-ink font-sans antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d8d0ba transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #d8d0ba;
+  border-radius: 999px;
+}
+
+:focus-visible {
+  outline: 2px solid #18160f;
+  outline-offset: 2px;
+}
+
+/* Opt-out for inputs and textareas that manage their own focus style */
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Fix mobile viewport: use dynamic vh so the browser chrome doesn't push content off-screen */
+@supports (height: 100dvh) {
+  .h-screen-safe {
+    height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  .h-screen-safe {
+    height: 100vh;
+  }
+}
+
+/* Prevent iOS/Android from zooming the whole page when the keyboard opens */
+html, body {
+  overscroll-behavior: none;
+}
+
