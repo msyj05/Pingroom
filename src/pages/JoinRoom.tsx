@@ -1,5 +1,5 @@
 import { useState, type FormEvent, useEffect, useRef } from 'react'
-import { ArrowLeft, ArrowRight, Loader2, Shield, Zap } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader2, Shield } from 'lucide-react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Logo from '../components/common/Logo'
 import RoomCodeDisplay from '../components/room/RoomCodeDisplay'
@@ -39,24 +39,21 @@ export default function JoinRoom() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
+      <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-6 sm:py-8">
         <Logo />
         <Link
           to="/"
-          className="flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink ring-1 ring-line transition hover:bg-line"
+          aria-label="Back to welcome"
+          className="flex shrink-0 items-center gap-2 rounded-full bg-white p-3 text-sm font-bold text-ink ring-1 ring-line transition hover:bg-line sm:px-5 sm:py-2.5"
         >
-          <ArrowLeft size={16} />
-          Back to welcome
+          <ArrowLeft size={18} className="shrink-0" />
+          <span className="hidden sm:inline">Back to welcome</span>
         </Link>
       </header>
 
       <main className="mx-auto max-w-5xl px-6 pb-24 pt-10">
         <div className="grid overflow-hidden rounded-xl2 shadow-panel lg:grid-cols-2">
           <div className="relative overflow-hidden bg-ink p-8 text-white sm:p-10">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-lime ring-1 ring-white/10">
-              <Zap size={13} />
-              Live preview
-            </span>
             <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight">
               Got a code or link?
               <br />
@@ -79,11 +76,17 @@ export default function JoinRoom() {
           </div>
 
           <form onSubmit={handleSubmit} className="bg-white p-8 sm:p-10">
-            <h2 className="font-display text-xl font-extrabold text-ink">Join a room</h2>
-            <p className="mt-1 text-sm text-muted">Enter your name and the room code.</p>
+            <h2 className="font-display text-xl font-extrabold text-ink">
+              Join a room
+            </h2>
+            <p className="mt-1 text-sm text-muted">
+              Enter your name and the room code.
+            </p>
 
             <label className="mt-6 block">
-              <span className="text-sm font-bold text-ink">Your display name</span>
+              <span className="text-sm font-bold text-ink">
+                Your display name
+              </span>
               <div className="mt-2 flex items-center rounded-2xl ring-1 ring-line focus-within:ring-2 focus-within:ring-ink">
                 <input
                   ref={nameInputRef}
@@ -99,33 +102,36 @@ export default function JoinRoom() {
               <span className="text-sm font-bold text-ink">Room code</span>
               <div
                 className={`mt-2 flex items-center rounded-2xl ring-1 focus-within:ring-2 ${
-                  status === 'error' ? 'ring-danger focus-within:ring-danger' : 'ring-line focus-within:ring-ink'
+                  status === "error"
+                    ? "ring-danger focus-within:ring-danger"
+                    : "ring-line focus-within:ring-ink"
                 }`}
               >
                 <input
                   value={code}
                   onChange={(e) => {
-                    setCode(e.target.value.toUpperCase())
-                    setStatus('idle')
+                    setCode(e.target.value.toUpperCase());
+                    setStatus("idle");
                   }}
                   placeholder="Enter room code"
                   maxLength={6}
                   className="flex-1 bg-transparent px-4 py-3.5 text-base uppercase tracking-widest text-ink placeholder:normal-case placeholder:tracking-normal placeholder:text-muted focus:outline-none"
                 />
               </div>
-              {status === 'error' && (
+              {status === "error" && (
                 <p className="mt-2 text-xs font-medium text-danger">
-                  The code doesn't match any live room. Check for typos (0 vs O, 1 vs I) and try again.
+                  The code doesn't match any live room. Check for typos (0 vs O,
+                  1 vs I) and try again.
                 </p>
               )}
             </label>
 
             <button
               type="submit"
-              disabled={!code.trim() || !name.trim() || status === 'checking'}
+              disabled={!code.trim() || !name.trim() || status === "checking"}
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 text-sm font-bold text-white transition hover:bg-ink-800 disabled:cursor-not-allowed disabled:bg-muted"
             >
-              {status === 'checking' ? (
+              {status === "checking" ? (
                 <Loader2 size={16} className="animate-spin" />
               ) : (
                 <ArrowRight size={16} />
@@ -133,7 +139,7 @@ export default function JoinRoom() {
               Join room
             </button>
 
-            {status === 'checking' && (
+            {status === "checking" && (
               <p className="mt-4 flex items-center gap-2 rounded-xl bg-lime-50 px-4 py-3 text-sm font-medium text-ink">
                 <Loader2 size={14} className="animate-spin" />
                 Connecting as {name}... verifying code with the room host.
@@ -143,5 +149,5 @@ export default function JoinRoom() {
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -1,23 +1,37 @@
 import { LogOut, Users } from 'lucide-react'
 import Avatar from "../common/Avatar";
-import type { Member } from '../../types'
+import type { Member, AvatarColor } from '../../types'
 
 interface ChatHeaderProps {
-  roomName: string
-  members: Member[]
-  typingName?: string | null
-  recordingName?: string | null
-  onToggleMembers: () => void
-  onRequestLeave: () => void
+  roomName: string;
+  members: Member[];
+  typingName?: string | null;
+  recordingName?: string | null;
+  onToggleMembers: () => void;
+  onRequestLeave: () => void;
+  roomAvatarColor: AvatarColor;
 }
 
-export default function ChatHeader({ roomName, members, typingName, recordingName, onToggleMembers, onRequestLeave }: ChatHeaderProps) {
-  const onlineCount = members.filter((m) => m.status !== 'offline').length
+export default function ChatHeader({
+  roomName,
+  members,
+  typingName,
+  recordingName,
+  onToggleMembers,
+  onRequestLeave,
+  roomAvatarColor,
+}: ChatHeaderProps) {
+  const onlineCount = members.filter((m) => m.status !== "offline").length;
 
   return (
     <div className="flex items-center justify-between gap-4 bg-ink px-6 py-4 text-white">
       <div className="flex min-w-0 items-center gap-3">
-        <Avatar name={roomName} color="lime" status="online" size="md" />
+        <Avatar
+          name={roomName}
+          color={roomAvatarColor}
+          status="online"
+          size="md"
+        />
         <div className="min-w-0">
           <h1 className="truncate font-display text-lg font-extrabold">
             {roomName}

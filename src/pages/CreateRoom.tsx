@@ -34,14 +34,15 @@ export default function CreateRoom() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
+      <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-6 sm:py-8">
         <Logo />
         <Link
           to="/"
-          className="flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink ring-1 ring-line transition hover:bg-line"
+          aria-label="Back to welcome"
+          className="flex shrink-0 items-center gap-2 rounded-full bg-white p-3 text-sm font-bold text-ink ring-1 ring-line transition hover:bg-line sm:px-5 sm:py-2.5"
         >
-          <ArrowLeft size={16} />
-          Back to welcome
+          <ArrowLeft size={18} className="shrink-0" />
+          <span className="hidden sm:inline">Back to welcome</span>
         </Link>
       </header>
 
@@ -62,7 +63,10 @@ export default function CreateRoom() {
 
           <button
             onClick={() =>
-              code && navigate(`/room/${code}`, { state: { roomName: confirmedRoomName, displayName: name } })
+              code &&
+              navigate(`/room/${code}`, {
+                state: { roomName: confirmedRoomName, displayName: name },
+              })
             }
             disabled={!code}
             className="flex w-full items-center justify-center gap-2 rounded-2xl bg-success py-4 text-sm font-bold text-white transition hover:bg-success-dark disabled:cursor-not-allowed disabled:opacity-40"
@@ -73,5 +77,5 @@ export default function CreateRoom() {
         </div>
       </main>
     </div>
-  )
+  );
 }

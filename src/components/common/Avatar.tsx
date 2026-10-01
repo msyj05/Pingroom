@@ -8,12 +8,6 @@ const COLOR_MAP: Record<AvatarColor, string> = {
   blue: 'bg-avatar-blue text-ink',
 }
 
-const STATUS_MAP: Record<string, string> = {
-  online: 'bg-success',
-  idle: 'bg-muted',
-  offline: 'bg-transparent',
-}
-
 interface AvatarProps {
   name: string
   color: AvatarColor
@@ -28,7 +22,7 @@ const SIZE_MAP = {
   lg: 'h-14 w-14 text-lg',
 }
 
-export default function Avatar({ name, color, status, size = 'md', className }: AvatarProps) {
+export default function Avatar({ name, color, size = 'md', className }: AvatarProps) {
   return (
     <span className={cn('relative inline-flex shrink-0', className)}>
       <span
@@ -40,14 +34,6 @@ export default function Avatar({ name, color, status, size = 'md', className }: 
       >
         {initials(name)}
       </span>
-      {status && status !== 'offline' && (
-        <span
-          className={cn(
-            'absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full ring-2 ring-white',
-            STATUS_MAP[status],
-          )}
-        />
-      )}
     </span>
   )
 }

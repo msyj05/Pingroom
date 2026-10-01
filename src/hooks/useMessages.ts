@@ -66,17 +66,31 @@ export function useMessages(roomCode: string, currentUser: Member, joinText?: st
     }
   }, [roomCode, currentUser.id, scrollToBottom])
 
-  const pushSystemMessage = useCallback((systemText: string) => {
-    setMessages((prev) => [...prev, { id: `system-${crypto.randomUUID()}`, kind: 'system', systemText, time: formatTime(new Date()) }])
-    scrollToBottom()
-  }, [scrollToBottom])
+    const pushSystemMessage = useCallback(
+      (systemText: string) => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `system-${crypto.randomUUID()}`,
+            kind: "system",
+            systemText,
+            time: formatTime(new Date()),
+            localOnly: true,
+          },
+        ]);
+        scrollToBottom();
+      },
+      [scrollToBottom],
+    );
 
-  useEffect(() => {
-    if (!joinText) return
-    // Defer to next tick to avoid cascading render warning on initial mount
-    setTimeout(() => pushSystemMessage(joinText), 0)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomCode])
+    // Only the client that just joined sees this message.
+    // It is never persisted to the database or broadcast, so it stays local.
+    useEffect(() => {
+      if (!joinText) return;
+      const timer = setTimeout(() => pushSystemMessage(joinText), 0);
+      return () => clearTimeout(timer);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [roomCode]);
 
   const handleSend = useCallback(
     async (payload: MessagePayload, reply?: ReplyMetadata) => {

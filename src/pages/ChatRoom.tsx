@@ -34,6 +34,7 @@ export default function ChatRoom() {
     notifyTyping,
     recordingName,
     notifyRecording,
+        roomAvatarColor, // <-- ADDED
     leaveRoom,
     isLoading,
   } = useChatRoom();
@@ -60,9 +61,31 @@ export default function ChatRoom() {
   }, [state, code, navigate]);
   // --------------------------
 
-  const handleConfirmLeave = async () => {
+  // Intercept the browser/hardware back button so it opens the leave
+  // confirmation modal instead of navigating away without confirmation.
+  useEffect(() => {
+    // Push a sentinel entry so the first back press lands here instead
+    // of actually leaving the page.
+    window.history.pushState({ pingroomSentinel: true }, "");
+
+    const handlePopState = () => {
+      // Re-push the sentinel so subsequent back presses keep working
+      window.history.pushState({ pingroomSentinel: true }, "");
+      setIsLeaveModalOpen(true);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+    const handleConfirmLeave = async () => {
     await leaveRoom();
-    navigate("/");
+    setIsLeaveModalOpen(false);
+    // Use replace so the sentinel entry is discarded rather than
+    // creating an extra history entry when we leave.
+    navigate("/", { replace: true });
   };
 
   const handleSendWithReply = (payload: MessagePayload) => {
@@ -144,6 +167,7 @@ export default function ChatRoom() {
             memberCount={members.length}
             typingName={typingName}
             recordingName={recordingName}
+            roomAvatarColor={roomAvatarColor}   // <-- ADDED
             onBack={handleConfirmLeave}
             onShowMembers={() => setMembersOpen(true)}
             onRequestLeave={() => setIsLeaveModalOpen(true)}
@@ -155,6 +179,7 @@ export default function ChatRoom() {
               members={members}
               typingName={typingName}
               recordingName={recordingName}
+              roomAvatarColor={roomAvatarColor}   // <-- ADDED
               onToggleMembers={() => setMembersOpen((v) => !v)}
               onRequestLeave={() => setIsLeaveModalOpen(true)}
             />
@@ -168,7 +193,7 @@ export default function ChatRoom() {
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="relative min-h-0 flex-1 overflow-y-auto px-3 py-3 lg:px-12 lg:py-4"            
+              className="relative min-h-0 flex-1 overflow-y-auto px-3 py-3 lg:px-12 lg:py-4"
             >
               <div className="mx-auto w-full max-w-6xl">
                 {messages.map((m, index) => {

@@ -1,5 +1,7 @@
 import { LogOut, Users } from 'lucide-react' // <-- Added Mic
 import Avatar from '../common/Avatar'
+import type { AvatarColor } from '../../types'
+
 
 interface MobileChatHeaderProps {
   roomName: string
@@ -9,6 +11,7 @@ interface MobileChatHeaderProps {
   onBack: () => void
   onShowMembers: () => void
   onRequestLeave: () => void
+    roomAvatarColor: AvatarColor
 }
 
 export default function MobileChatHeader({
@@ -17,12 +20,14 @@ export default function MobileChatHeader({
   typingName,
   recordingName,
   onShowMembers,
-  onRequestLeave,
+  onRequestLeave,  
+  roomAvatarColor,
+
 }: MobileChatHeaderProps) {
   return (
     <div className="flex items-center justify-between gap-3 bg-ink px-3 py-2 text-white lg:hidden">
       <div className="flex min-w-0 items-center gap-2">
-        <Avatar name={roomName} color="lime" status="online" size="md" />
+        <Avatar name={roomName} color={roomAvatarColor} status="online" size="md" />
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 truncate font-display text-base font-bold">
             {roomName} <span className="h-2 w-2 rounded-full bg-success" />

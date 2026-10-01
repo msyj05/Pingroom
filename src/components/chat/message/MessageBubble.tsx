@@ -146,7 +146,6 @@ export default function MessageBubble({
               <span className="text-xs font-bold text-ink">
                 {message.authorName}
               </span>
-              <span className="text-[10px] text-muted">{message.time}</span>
             </div>
           )}
 

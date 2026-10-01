@@ -30,25 +30,26 @@ export interface ReplyMetadata {
 }
 
 export interface ChatMessage {
-  id: string
-  kind: 'message' | 'system'
-  authorId?: string
-  authorName?: string
-  color?: AvatarColor
-  text?: string
-  audioUrl?: string
-  duration?: number
-  fileUrl?: string
-  fileName?: string
-  time?: string
-  isOwn?: boolean
-  status?: 'sending' | 'sent'
-  systemText?: string
-  isDeleted?: boolean
-  isEdited?: boolean // <-- ADDED
-  replyToId?: string
-  replyToText?: string
-  replyToAuthor?: string
+  id: string;
+  kind: "message" | "system";
+  authorId?: string;
+  authorName?: string;
+  color?: AvatarColor;
+  text?: string;
+  audioUrl?: string;
+  duration?: number;
+  fileUrl?: string;
+  fileName?: string;
+  time?: string;
+  isOwn?: boolean;
+  status?: "sending" | "sent";
+  systemText?: string;
+  isDeleted?: boolean;
+  isEdited?: boolean; // <-- ADDED
+  replyToId?: string;
+  replyToText?: string;
+  replyToAuthor?: string;
+  localOnly?: boolean;
 }
 
 export interface Room {

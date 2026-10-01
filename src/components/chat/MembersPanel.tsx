@@ -65,7 +65,6 @@ export default function MembersPanel({ code, members, onClose, className }: Memb
             <Share2 size={16} />
             Invite more
           </button>
-          <p className="pt-3 text-center text-xs text-muted">Rooms hold up to 8 people</p>
         </div>
       </div>
 

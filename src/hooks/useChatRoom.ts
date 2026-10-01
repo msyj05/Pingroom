@@ -6,7 +6,8 @@ import { useMessages } from "./useMessages";
 import { useTypingIndicator } from "./useTypingIndicator";
 import { useConnectionStatus } from "./useConnectionStatus";
 import { useVoiceRecordingIndicator } from "./useVoiceRecordingIndicator";
-import type { ChatRoomNavState, Member } from "../types";
+import type { ChatRoomNavState, Member, AvatarColor } from "../types";
+import { randomAvatarColor } from "../lib/utils";
 
 const getSessionId = () => {
   let id = sessionStorage.getItem("pingroom_session_id");
@@ -25,6 +26,14 @@ const storeDisplayName = (name: string) => {
   sessionStorage.setItem("pingroom_display_name", name);
 };
 
+const getStoredAvatarColor = (): AvatarColor => {
+  const stored = sessionStorage.getItem("pingroom_avatar_color") as AvatarColor | null;
+  if (stored) return stored;
+  const fresh = randomAvatarColor();
+  sessionStorage.setItem("pingroom_avatar_color", fresh);
+  return fresh;
+};
+
 export function useChatRoom() {
   const { code = "X7K2P9" } = useParams();
   const location = useLocation();
@@ -35,10 +44,21 @@ export function useChatRoom() {
   const [currentUser] = useState<Member>({
     id: getSessionId(),
     name: initialDisplayName,
-    color: "purple",
+    color: getStoredAvatarColor(),
     status: "online",
     isYou: true,
   });
+
+const AVATAR_COLORS: AvatarColor[] = ["purple", "lime", "orange", "blue"];
+
+/** Deterministic color from the room code, so every client sees the same room color. */
+const roomColorFromCode = (code: string): AvatarColor => {
+  let hash = 0;
+  for (let i = 0; i < code.length; i++) {
+    hash = (hash * 31 + code.charCodeAt(i)) >>> 0;
+  }
+  return AVATAR_COLORS[hash % AVATAR_COLORS.length];
+};
 
   useEffect(() => {
     if (state?.displayName) {
@@ -131,5 +151,6 @@ export function useChatRoom() {
     notifyRecording,
     leaveRoom,
     isLoading, // <-- ADDED
+    roomAvatarColor: roomColorFromCode(code),
   };
 }
