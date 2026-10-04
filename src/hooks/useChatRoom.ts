@@ -69,17 +69,18 @@ const roomColorFromCode = (code: string): AvatarColor => {
   const [roomName, setRoomName] = useState(state?.roomName || "Chat Room");
 
   useEffect(() => {
-    if (!supabase || state?.roomName) return;
-    const fetchRoomName = async () => {
-      const { data } = await supabase
-        .from("rooms")
-        .select("name")
-        .eq("code", code)
-        .single();
-      if (data?.name) setRoomName(data.name);
-    };
-    void fetchRoomName();
-  }, [code, state?.roomName]);
+      if (!supabase || state?.roomName) return;
+      const db = supabase; // local non-null alias for use inside the async closure
+      const fetchRoomName = async () => {
+        const { data } = await db
+          .from("rooms")
+          .select("name")
+          .eq("code", code)
+          .single();
+        if (data?.name) setRoomName(data.name);
+      };
+      void fetchRoomName();
+    }, [code, state?.roomName]);
 
   const { members, leaveRoom } = useMembers(code, currentUser);
   const {
