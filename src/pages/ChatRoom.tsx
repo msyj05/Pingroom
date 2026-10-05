@@ -168,7 +168,6 @@ export default function ChatRoom() {
             typingName={typingName}
             recordingName={recordingName}
             roomAvatarColor={roomAvatarColor}   // <-- ADDED
-            onBack={handleConfirmLeave}
             onShowMembers={() => setMembersOpen(true)}
             onRequestLeave={() => setIsLeaveModalOpen(true)}
           />

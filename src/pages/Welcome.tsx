@@ -1,4 +1,4 @@
-import { ArrowRight, Plus, Shield, Users, Zap } from 'lucide-react'
+import { ArrowRight, Plus, Users, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Logo from '../components/common/Logo'
 import Avatar from '../components/common/Avatar'
@@ -40,7 +40,7 @@ export default function Welcome() {
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-lime px-3 py-1.5 text-sm font-bold text-ink">
             <span className="rounded-full bg-ink px-2 py-0.5 text-xs text-lime">New</span>
-            No sign-up. No password. No trace.
+            No sign-up. No password.
           </span>
 
           <h1 className="mt-6 font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-6xl">
@@ -74,9 +74,6 @@ export default function Welcome() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-6 text-sm text-muted">
-            <span className="flex items-center gap-2">
-              <Shield size={16} /> Private by design
-            </span>
             <span className="flex items-center gap-2">
               <Zap size={16} /> Instant, no install
             </span>

@@ -8,7 +8,6 @@ interface MobileChatHeaderProps {
   memberCount: number
   typingName?: string | null
   recordingName?: string | null // <-- ADDED
-  onBack: () => void
   onShowMembers: () => void
   onRequestLeave: () => void
     roomAvatarColor: AvatarColor

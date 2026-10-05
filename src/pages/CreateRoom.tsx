@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../components/common/Logo'
@@ -16,14 +16,30 @@ export default function CreateRoom() {
   const [confirmedRoomName, setConfirmedRoomName] = useState('')
   const [copied, setCopied] = useState(false)
 
+  const previewRef = useRef<HTMLDivElement>(null) // <-- ADDED
+
   const canGenerate = name.trim().length > 0
 
   async function handleGenerate() {
-    if (!canGenerate) return
-    const room = await createRoom({ roomName, displayName: name, duration })
-    setCode(room.code)
-    setConfirmedRoomName(room.roomName)
+    if (!canGenerate) return;
+    const room = await createRoom({ roomName, displayName: name, duration });
+    setCode(room.code);
+    setConfirmedRoomName(room.roomName);
+
+    // Scroll the preview into view on small screens only.
+    // The layout is single-column below lg, so on desktop the preview
+    // is already visible next to the form and scrolling would feel odd.
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      setTimeout(() => {
+        previewRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 50); // wait a tick so the preview renders with the code first
+    }
   }
+
+  
 
   async function handleCopy() {
     if (!code) return
@@ -58,7 +74,7 @@ export default function CreateRoom() {
           onGenerate={handleGenerate}
         />
 
-        <div className="space-y-6">
+        <div ref={previewRef} className="space-y-6 scroll-mt-6">
           <RoomPreview code={code} copied={copied} onCopy={handleCopy} />
 
           <button
